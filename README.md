@@ -1,5 +1,5 @@
 # QA-scripts-for-TestLink
-QA scipts based on TestLink-API-Python-client
+QA scipts based on TestLink-API-Python-client - https://pypi.org/project/TestLink-API-Python-client/.
 
 # Introduction
 
