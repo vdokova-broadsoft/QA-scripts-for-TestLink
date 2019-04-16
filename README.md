@@ -13,10 +13,7 @@ Renault JinFeng_ idea - an interaction of TestLink_, `Robot Framework`_ and Jenk
 # Preconditions
 
 You should install following packages from Bash terminal (You can use Cigwin on Windows):
-- python 2.7:
-```
-
-```
+- python 2.7
 - testlink:
 ```
 pip install TestLink-API-Python-client
@@ -30,7 +27,20 @@ brew install wget
 
 Currently there are two script files in this repo - python and bash.
 Download them and put in a folder (during the script files will be downloaded in sub-folder named resources)
-To start the you should open a bash terminal, open the folder with the scripts and run:
+To start the you should open a bash terminal, open the folder with the scripts and and simply run it:
 ```
-xx.sh
+./addTestCasesToTestPlan.sh
 ```
+And that's it - you are ready to use it!
+
+# What does it do
+
+You will be able to choose from the following operations:
+
+1. Create new test plan from all TCs from a Jenkins job.
+2. Create new test plan from passed TCs from a Jenkins job.
+3. Add all TCs from a Jenkins job to an existing test plan.
+4. Add passed TCs from a Jenkins job to an existing test plan.
+5. Add all TCs from an existing test plan to another.
+
+If there are any questions - don't hesitate to contact me. :))
