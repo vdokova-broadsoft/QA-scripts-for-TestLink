@@ -1,6 +1,6 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Name: Get TCs data and manage Test Plans via TestLink-API-Python
-# Version: 1.0
+# Version: 1.1
 # Author: Valentina Dokova
 #
 # Should previously set TestLink server URL and generated personal API DevKey
@@ -150,6 +150,23 @@ def getExternalIds(allTestCases):
     
     return externalIDs
 
+# Function for input keyword until the input is an existing keyword. 
+def inputExistingKeyword (keyword):
+    keywordInfo = 0
+    while not (keywordInfo):
+        keyword = raw_input('Please, input the keyword: ')
+
+        # Create a dict with all keywords from the project
+        keywords = tls.getProjectKeywords(tls.getProjectIDByName(testProject))
+
+        # Check if the keyword exists in this project
+        keywordInfo = keyword in keywords.values()
+
+        if (keywordInfo == False):
+            print ('This Keyword doesn\'t exist. Please, input again the keyword.\n')
+
+    return keyword
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ------------------------------ Code -----------------------------------
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -157,7 +174,7 @@ def getExternalIds(allTestCases):
 # Ask the user to select what he wants to do 
 while True:
     print ('\n')
-    print ('Please, input what you want to do:\n 1: Create new test plan from all TCs from a Jenkins job.\n 2: Create new test plan from passed TCs from a Jenkins job.\n 3: Add all TCs from a Jenkins job to an existing test plan.\n 4: Add passed TCs from a Jenkins job to an existing test plan.\n 5: Add all TCs from an existing test plan to another.')
+    print ('Please, input what you want to do:\n 1: Create new test plan from all TCs from a Jenkins job.\n 2: Create new test plan from passed TCs from a Jenkins job.\n 3: Add all TCs from a Jenkins job to an existing test plan.\n 4: Add passed TCs from a Jenkins job to an existing test plan.\n 5: Add all TCs from an existing test plan to another.\n 6: Add an existing keyword to all TCs from an existing test plan.')
     switcher = raw_input('Your choice: ')
     print ('\n')
 
@@ -187,7 +204,7 @@ while True:
             tls.addTestCaseToTestPlan(testprojectid=currentTestProjectID, testplanid=currentTestPlanID, testcaseexternalid=tcExternalID, version=tcVersion)
             print('Processed ' + str(n+1) + '/' + str(testCasesCount))
 
-        print('\nDone.\nHave a successful and smiley day! :))\n')
+        print('\nDone.\nCreated ' + str(testPlan) + ' test plan from all test cases from the Jenkins job.\nHave a successful and smiley day! :))\n')
         break
 
     # Option 2: Create new test plan from passed TCs from a Jenkins job
@@ -218,7 +235,7 @@ while True:
             tls.addTestCaseToTestPlan(testprojectid=currentTestProjectID, testplanid=currentTestPlanID, testcaseexternalid=tcExternalID, version=tcVersion)
             print('Processed ' + str(n+1) + '/' + str(testCasesCount))
 
-        print('\nDone.\nHave a successful and smiley day! :))\n')
+        print('\nDone.\nCreated ' + str(testPlan) + ' test plan from passed test cases from the Jenkins job.\nHave a successful and smiley day! :))\n')
         break
     
     # Option 3: Add all TCs from a Jenkins job to an existing test plan
@@ -247,7 +264,7 @@ while True:
             tls.addTestCaseToTestPlan(testprojectid=currentTestProjectID, testplanid=currentTestPlanID, testcaseexternalid=tcExternalID, version=tcVersion)
             print('Processed ' + str(n+1) + '/' + str(testCasesCount))
 
-        print('\nDone.\nHave a successful and smiley day! :))\n')
+        print('\nDone.\nAdded all test cases from the Jenkins job to ' + str(testPlan) + ' test plan.\nHave a successful and smiley day! :))\n')
         break
     
     # Option 4: Add passed TCs from a Jenkins job to an existing test plan
@@ -278,7 +295,7 @@ while True:
             tls.addTestCaseToTestPlan(testprojectid=currentTestProjectID, testplanid=currentTestPlanID, testcaseexternalid=tcExternalID, version=tcVersion)
             print('Processed ' + str(n+1) + '/' + str(testCasesCount))
 
-        print('\nDone.\nHave a successful and smiley day! :))\n')
+        print('\nDone.\nAdded passed test cases from the Jenkins job to ' + str(testPlan) + ' test plan.\nHave a successful and smiley day! :))\n')
         break
 
     # Option 5: Add all TCs from an existing test plan to another
@@ -308,9 +325,36 @@ while True:
             tls.addTestCaseToTestPlan(testprojectid=currentTestProjectID, testplanid=testPlanToID, testcaseexternalid=tcExternalID, version=tcVersion)
             print('Processed ' + str(n+1) + '/' + str(testsForImportCount))
 
-        print('\nDone.\nHave a successful and smiley day! :))\n')
+        print('\nDone.\nAdded all test cases from ' + str(testPlanFrom) + ' test plan to ' + str(testPlanTo) + ' test plan.\nHave a successful and smiley day! :))\n')
+        break
+
+    # Option 6: Add an existing keyword to all TCs from an existing test plan
+    elif switcher == '6':
+
+        print ('You have selected: Add an existing keyword to all TCs from an existing test plan.\n')
+
+        # Ask the user to input the name of the Test Plan. It should already exist.
+        testPlan = ''
+        testPlan = inputExistingTestPlan(testPlan)
+
+        # Ask the user to input the keyword. It should already exist.
+        keyword = ''
+        keyword = inputExistingKeyword(keyword)
+
+        # Add the keyword to all test cases from the selected test plan
+        currentTestPlanID = getTestPlanID(testProject, testPlan)
+
+        testsForKeywords = tls.getTestCasesForTestPlan(currentTestPlanID)
+        testsForKeywordsCount = len(testsForKeywords)
+
+        for n in range (testsForKeywordsCount):
+            tcExternalID = testsForKeywords.values()[n][0]['full_external_id']
+            tls.addTestCaseKeywords({tcExternalID : [keyword]})
+            print('Processed ' + str(n+1) + '/' + str(testsForKeywordsCount))
+
+        print('\nDone.\nAdded keyword ' + str(keyword) + ' to all test cases from ' + str(testPlan) + ' test plan.\nHave a successful and smiley day! :))\n')
         break
 
     # If the user inputs an incorrect value, return to the input screen.
     else:
-        print ('Incorrect input! Please, input a number from 1 to 5.')
+        print ('Incorrect input! Please, input a number from 1 to 6.')
