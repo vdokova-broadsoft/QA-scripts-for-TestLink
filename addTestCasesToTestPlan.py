@@ -48,7 +48,7 @@ def downloadAllTCsFromJenkins (allTestCases):
     while not (allTestCases):
         # Download the file for all test cases from the Jenkins _output-XX.xml
         buildJob = raw_input('Please, input the link for the desired Jenkins job.\nExample: https://ci.sof.broadsoft.com/view/TA/job/ui-test-connect-android-full-stable-3-7-x/: ')
-        buildNumber = raw_input('Please, input the the desired build number.\nExample: 19: ')
+        buildNumber = raw_input('Please, input the the desired build number of the selected Jenkins job. (This is NOT the build number of the app!)\nExample: 19: ')
         allTestCasesURL = buildJob + buildNumber + '/robot/report/_output-' + buildNumber +'.xml'
 
         # Create a folder and specify the name for the downloaded file
@@ -80,7 +80,7 @@ def downloadPassedTCsFromJenkins (passedTestCases):
     while not (passedTestCases):
         # Download the file for the passed test cases from the Jenkins _test_link_results-XX.xml
         buildJob = raw_input('Please, input the link for the desired Jenkins job.\nExample: https://ci.sof.broadsoft.com/view/TA/job/ui-test-connect-android-full-stable-3-7-x/: ')
-        buildNumber = raw_input('Please, input the the desired build number.\nExample: 19: ')
+        buildNumber = raw_input('Please, input the the desired build number of the selected Jenkins job. (This is NOT the build number of the app!)\nExample: 19: ')
         passedTestCasesURL = buildJob + buildNumber + '/robot/report/_test_link_results-' + buildNumber +'.xml'
         
         # Create a folder and specify the name for the downloaded file
