@@ -22,6 +22,11 @@ pip install TestLink-API-Python-client
 ```
 brew install wget
 ```
+(If there is an error that wget cannot be imported use:
+```
+pip install wget
+```
+This will install the propper version of wget for python 2.)
 
 # How to run the script
 
