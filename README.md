@@ -26,8 +26,7 @@ brew install wget
 ```
 pip install wget
 ```
-This will install the propper version of wget for python 2.
-)
+This will install the propper version of wget for python 2.)
 
 # How to run the script
 
