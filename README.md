@@ -47,5 +47,6 @@ You will be able to choose from the following operations:
 3. Add all TCs from a Jenkins job to an existing test plan.
 4. Add passed TCs from a Jenkins job to an existing test plan.
 5. Add all TCs from an existing test plan to another.
+6. Add an existing keyword to all TCs from an existing test plan.
 
 If there are any questions - don't hesitate to contact me. :))
